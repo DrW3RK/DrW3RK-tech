@@ -189,6 +189,23 @@ section.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Twitter Feed Section */
+#twitter-feed {
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.twitter-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 400px;
+}
+
 /* Article Cards */
 .article-grid {
     display: grid;
@@ -507,5 +524,9 @@ footer {
 
     .talks-grid {
         grid-template-columns: 1fr;
+    }
+
+    .twitter-container {
+        padding: 15px;
     }
 }
