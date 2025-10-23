@@ -1,63 +1,101 @@
+// Utility function to normalize paths
+function normalizePath(path) {
+    if (!path) return '/';
+    // Remove trailing slash and .html extension
+    return path.replace(/\/$/, '').replace(/\.html$/, '') || '/';
+}
+
 // Active nav link highlighting
-document.addEventListener('DOMContentLoaded', () => {
-    // Get current page path
-    const currentPath = window.location.pathname;
-    
-    // Normalize path - remove trailing slash and .html if present
-    const normalizedPath = currentPath.replace(/\/$/, '').replace(/\.html$/, '');
-    
-    // Update active nav link based on current path
-    document.querySelectorAll('.nav-item').forEach(link => {
-        link.classList.remove('active');
-        const href = link.getAttribute('href');
-        const normalizedHref = href.replace(/\/$/, '').replace(/\.html$/, '');
+function updateActiveNavLink() {
+    try {
+        const currentPath = normalizePath(window.location.pathname);
+        const navLinks = document.querySelectorAll('.nav-item');
         
-        // Check if this is the current page
-        if (normalizedHref === normalizedPath || 
-            (normalizedPath === '' && normalizedHref === '') ||
-            (normalizedPath === '/index' && normalizedHref === '')) {
-            link.classList.add('active');
-        }
-    });
-});
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            const normalizedHref = normalizePath(href);
+            
+            // Remove active class from all links
+            link.classList.remove('active');
+            
+            // Add active class to matching link
+            if (normalizedHref === currentPath) {
+                link.classList.add('active');
+            }
+        });
+    } catch (error) {
+        console.error('Error updating active nav link:', error);
+    }
+}
 
 // Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    // Alt + H for home
-    if (e.altKey && e.key === 'h') {
-        e.preventDefault();
-        window.location.href = '/';
-    }
-    // Alt + W for work
-    if (e.altKey && e.key === 'w') {
-        e.preventDefault();
-        window.location.href = '/work';
-    }
-    // Alt + T for talks
-    if (e.altKey && e.key === 't') {
-        e.preventDefault();
-        window.location.href = '/talks';
-    }
-});
-
-// Smooth scroll for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        try {
+            // Alt + H for home
+            if (e.altKey && e.key === 'h') {
+                e.preventDefault();
+                window.location.href = '/';
+            }
+            // Alt + W for work
+            else if (e.altKey && e.key === 'w') {
+                e.preventDefault();
+                window.location.href = '/work';
+            }
+            // Alt + T for talks
+            else if (e.altKey && e.key === 't') {
+                e.preventDefault();
+                window.location.href = '/talks';
+            }
+        } catch (error) {
+            console.error('Error handling keyboard shortcut:', error);
         }
     });
-});
+}
+
+// Smooth scroll for anchor links
+function setupSmoothScroll() {
+    try {
+        const anchorLinks = document.querySelectorAll('a[href^="#"]');
+        
+        anchorLinks.forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                try {
+                    const targetId = this.getAttribute('href');
+                    if (targetId && targetId !== '#') {
+                        const target = document.querySelector(targetId);
+                        if (target) {
+                            e.preventDefault();
+                            target.scrollIntoView({ 
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error during smooth scroll:', error);
+                }
+            });
+        });
+    } catch (error) {
+        console.error('Error setting up smooth scroll:', error);
+    }
+}
 
 // Track page views (simple analytics)
 function trackPageView() {
-    const page = window.location.pathname.replace(/\.html$/, '') || '/';
-    console.log(`User viewed: ${page}`);
+    try {
+        const page = normalizePath(window.location.pathname);
+        console.log(`User viewed: ${page}`);
+    } catch (error) {
+        console.error('Error tracking page view:', error);
+    }
 }
 
-// Log page view on load
+// Initialize all functionality when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
+    updateActiveNavLink();
+    setupKeyboardShortcuts();
+    setupSmoothScroll();
     trackPageView();
 });
