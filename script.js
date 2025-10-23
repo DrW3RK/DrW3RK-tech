@@ -1,42 +1,35 @@
-// Page Navigation
-function navigateTo(page) {
-    // Hide all sections
-    document.querySelectorAll('section').forEach(section => {
-        section.classList.remove('active');
-    });
-
-    // Show selected section
-    const selectedSection = document.getElementById(page);
-    if (selectedSection) {
-        selectedSection.classList.add('active');
-    }
-
-    // Update nav links
+// Active nav link highlighting
+document.addEventListener('DOMContentLoaded', () => {
+    // Get current page
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    
+    // Update active nav link based on current page
     document.querySelectorAll('.nav-item').forEach(link => {
         link.classList.remove('active');
+        const href = link.getAttribute('href');
+        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+            link.classList.add('active');
+        }
     });
-    event.target.classList.add('active');
-
-    // Scroll to top smoothly
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+});
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-        console.log('Pressed Escape key');
-    }
     // Alt + H for home
     if (e.altKey && e.key === 'h') {
         e.preventDefault();
-        navigateTo('home');
+        window.location.href = 'index.html';
     }
-});
-
-// Active nav link on page load
-document.addEventListener('DOMContentLoaded', () => {
-    const links = document.querySelectorAll('.nav-item');
-    links[0].classList.add('active');
+    // Alt + W for work
+    if (e.altKey && e.key === 'w') {
+        e.preventDefault();
+        window.location.href = 'work.html';
+    }
+    // Alt + T for talks
+    if (e.altKey && e.key === 't') {
+        e.preventDefault();
+        window.location.href = 'talks.html';
+    }
 });
 
 // Smooth scroll for anchor links
@@ -51,13 +44,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // Track page views (simple analytics)
-function trackPageView(page) {
+function trackPageView() {
+    const page = window.location.pathname.split('/').pop() || 'index.html';
     console.log(`User viewed: ${page}`);
 }
 
-// Log navigation events
-const originalNavigateTo = navigateTo;
-navigateTo = function(page) {
-    trackPageView(page);
-    return originalNavigateTo(page);
-};
+// Log page view on load
+document.addEventListener('DOMContentLoaded', () => {
+    trackPageView();
+});
