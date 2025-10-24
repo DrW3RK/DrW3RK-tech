@@ -153,7 +153,7 @@ function setupCarousel() {
         
         // Auto play
         function startAutoPlay() {
-            autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+            autoPlayInterval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
         }
         
         function stopAutoPlay() {
