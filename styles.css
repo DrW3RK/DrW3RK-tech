@@ -314,6 +314,74 @@ section.active {
     font-weight: 600;
 }
 
+/* Books Section */
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.books-grid a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.book-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-card:hover {
+    border-color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+}
+
+.book-cover {
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-content {
+    padding: 20px;
+}
+
+.book-content h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.book-author {
+    font-size: 14px;
+    color: #888888;
+    font-style: italic;
+    margin-bottom: 12px;
+}
+
+.book-description {
+    font-size: 14px;
+    color: #cccccc;
+    line-height: 1.6;
+}
+
 /* Talks Section */
 .talks-grid {
     display: grid;
@@ -523,6 +591,10 @@ footer {
     }
 
     .talks-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .books-grid {
         grid-template-columns: 1fr;
     }
 

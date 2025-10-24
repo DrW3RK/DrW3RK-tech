@@ -47,6 +47,11 @@ function setupKeyboardShortcuts() {
                 e.preventDefault();
                 window.location.href = '/talks';
             }
+            // Alt + L for life
+            else if (e.altKey && e.key === 'l') {
+                e.preventDefault();
+                window.location.href = '/life';
+            }
         } catch (error) {
             console.error('Error handling keyboard shortcut:', error);
         }
