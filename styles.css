@@ -974,6 +974,11 @@ footer {
     margin-bottom: 40px;
 }
 
+.research-grid a {
+    text-decoration: none;
+    color: inherit;
+}
+
 .research-card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -992,11 +997,11 @@ footer {
 }
 
 .patent-card {
-    border-left-color: #4CAF50;
+    border-left-color: #ffffff;
 }
 
 .patent-card:hover {
-    border-left-color: #4CAF50;
+    border-left-color: #ffffff;
 }
 
 .research-header {
@@ -1025,7 +1030,7 @@ footer {
 }
 
 .patent-badge {
-    background: #4CAF50;
+    background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
     padding: 4px 12px;
     border-radius: 4px;
