@@ -106,15 +106,45 @@ function setupCarousel() {
         const slides = document.querySelectorAll('.carousel-slide');
         const prevBtn = document.querySelector('.carousel-prev');
         const nextBtn = document.querySelector('.carousel-next');
-        const thumbnails = document.querySelectorAll('.thumbnail');
+        let thumbnails = document.querySelectorAll('.thumbnail');
         
         if (slides.length === 0) return;
         
         let currentSlide = 0;
         let autoPlayInterval;
+        let isTransitioning = false;
+        
+        // Create thumbnails if they don't exist
+        if (thumbnails.length === 0) {
+            const thumbnailContainer = document.querySelector('.carousel-thumbnails');
+            if (thumbnailContainer) {
+                slides.forEach((slide, index) => {
+                    const img = slide.querySelector('img');
+                    const caption = slide.querySelector('.carousel-caption');
+                    if (img) {
+                        const thumbnail = document.createElement('div');
+                        thumbnail.className = 'thumbnail';
+                        if (index === 0) thumbnail.classList.add('active');
+                        
+                        const thumbImg = document.createElement('img');
+                        thumbImg.src = img.src;
+                        thumbImg.alt = caption ? caption.textContent : `Slide ${index + 1}`;
+                        
+                        thumbnail.appendChild(thumbImg);
+                        thumbnailContainer.appendChild(thumbnail);
+                    }
+                });
+                thumbnails = document.querySelectorAll('.thumbnail');
+            }
+        }
         
         // Show specific slide
-        function showSlide(index) {
+        function showSlide(index, skipTransitionCheck = false) {
+            // Prevent rapid transitions
+            if (isTransitioning && !skipTransitionCheck) return;
+            
+            isTransitioning = true;
+            
             // Handle wrap around
             if (index >= slides.length) {
                 currentSlide = 0;
@@ -139,6 +169,11 @@ function setupCarousel() {
                     thumbnail.classList.add('active');
                 }
             });
+            
+            // Allow transitions after a brief delay
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 300);
         }
         
         // Next slide
@@ -153,27 +188,37 @@ function setupCarousel() {
         
         // Auto play
         function startAutoPlay() {
-            autoPlayInterval = setInterval(nextSlide, 3000); // Change slide every 3 seconds
+            stopAutoPlay(); // Clear any existing interval
+            autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
         }
         
         function stopAutoPlay() {
-            clearInterval(autoPlayInterval);
+            if (autoPlayInterval) {
+                clearInterval(autoPlayInterval);
+                autoPlayInterval = null;
+            }
+        }
+        
+        function restartAutoPlay() {
+            stopAutoPlay();
+            // Add a delay before restarting autoplay to give user time
+            setTimeout(() => {
+                startAutoPlay();
+            }, 500);
         }
         
         // Event listeners for buttons
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
                 prevSlide();
-                stopAutoPlay();
-                startAutoPlay(); // Restart auto play after manual navigation
+                restartAutoPlay();
             });
         }
         
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 nextSlide();
-                stopAutoPlay();
-                startAutoPlay(); // Restart auto play after manual navigation
+                restartAutoPlay();
             });
         }
         
@@ -181,8 +226,7 @@ function setupCarousel() {
         thumbnails.forEach((thumbnail, index) => {
             thumbnail.addEventListener('click', () => {
                 showSlide(index);
-                stopAutoPlay();
-                startAutoPlay(); // Restart auto play after manual navigation
+                restartAutoPlay();
             });
         });
         
@@ -194,12 +238,10 @@ function setupCarousel() {
             
             if (e.key === 'ArrowLeft') {
                 prevSlide();
-                stopAutoPlay();
-                startAutoPlay();
+                restartAutoPlay();
             } else if (e.key === 'ArrowRight') {
                 nextSlide();
-                stopAutoPlay();
-                startAutoPlay();
+                restartAutoPlay();
             }
         });
         
