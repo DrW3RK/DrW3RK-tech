@@ -97,10 +97,132 @@ function trackPageView() {
     }
 }
 
+// Carousel functionality
+function setupCarousel() {
+    try {
+        const carousel = document.querySelector('.carousel');
+        if (!carousel) return; // Exit if carousel doesn't exist on this page
+        
+        const slides = document.querySelectorAll('.carousel-slide');
+        const prevBtn = document.querySelector('.carousel-prev');
+        const nextBtn = document.querySelector('.carousel-next');
+        const dots = document.querySelectorAll('.dot');
+        
+        if (slides.length === 0) return;
+        
+        let currentSlide = 0;
+        let autoPlayInterval;
+        
+        // Show specific slide
+        function showSlide(index) {
+            // Handle wrap around
+            if (index >= slides.length) {
+                currentSlide = 0;
+            } else if (index < 0) {
+                currentSlide = slides.length - 1;
+            } else {
+                currentSlide = index;
+            }
+            
+            // Update slides
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === currentSlide) {
+                    slide.classList.add('active');
+                }
+            });
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                dot.classList.remove('active');
+                if (i === currentSlide) {
+                    dot.classList.add('active');
+                }
+            });
+        }
+        
+        // Next slide
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+        
+        // Previous slide
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+        
+        // Auto play
+        function startAutoPlay() {
+            autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
+        }
+        
+        function stopAutoPlay() {
+            clearInterval(autoPlayInterval);
+        }
+        
+        // Event listeners for buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                prevSlide();
+                stopAutoPlay();
+                startAutoPlay(); // Restart auto play after manual navigation
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                nextSlide();
+                stopAutoPlay();
+                startAutoPlay(); // Restart auto play after manual navigation
+            });
+        }
+        
+        // Event listeners for dots
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                showSlide(index);
+                stopAutoPlay();
+                startAutoPlay(); // Restart auto play after manual navigation
+            });
+        });
+        
+        // Keyboard navigation for carousel
+        document.addEventListener('keydown', (e) => {
+            // Only handle arrow keys if carousel exists and is visible
+            const carouselContainer = document.querySelector('.carousel-container');
+            if (!carouselContainer) return;
+            
+            if (e.key === 'ArrowLeft') {
+                prevSlide();
+                stopAutoPlay();
+                startAutoPlay();
+            } else if (e.key === 'ArrowRight') {
+                nextSlide();
+                stopAutoPlay();
+                startAutoPlay();
+            }
+        });
+        
+        // Pause auto play on hover
+        const carouselContainer = document.querySelector('.carousel-container');
+        if (carouselContainer) {
+            carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+            carouselContainer.addEventListener('mouseleave', startAutoPlay);
+        }
+        
+        // Start auto play
+        startAutoPlay();
+        
+    } catch (error) {
+        console.error('Error setting up carousel:', error);
+    }
+}
+
 // Initialize all functionality when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
     updateActiveNavLink();
     setupKeyboardShortcuts();
     setupSmoothScroll();
     trackPageView();
+    setupCarousel();
 });
