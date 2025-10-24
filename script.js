@@ -97,7 +97,7 @@ function trackPageView() {
     }
 }
 
-// Carousel functionality
+// Carousel functionality with thumbnail support
 function setupCarousel() {
     try {
         const carousel = document.querySelector('.carousel');
@@ -106,7 +106,7 @@ function setupCarousel() {
         const slides = document.querySelectorAll('.carousel-slide');
         const prevBtn = document.querySelector('.carousel-prev');
         const nextBtn = document.querySelector('.carousel-next');
-        const dots = document.querySelectorAll('.dot');
+        const thumbnails = document.querySelectorAll('.thumbnail');
         
         if (slides.length === 0) return;
         
@@ -132,11 +132,11 @@ function setupCarousel() {
                 }
             });
             
-            // Update dots
-            dots.forEach((dot, i) => {
-                dot.classList.remove('active');
+            // Update thumbnails
+            thumbnails.forEach((thumbnail, i) => {
+                thumbnail.classList.remove('active');
                 if (i === currentSlide) {
-                    dot.classList.add('active');
+                    thumbnail.classList.add('active');
                 }
             });
         }
@@ -177,9 +177,9 @@ function setupCarousel() {
             });
         }
         
-        // Event listeners for dots
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => {
+        // Event listeners for thumbnails
+        thumbnails.forEach((thumbnail, index) => {
+            thumbnail.addEventListener('click', () => {
                 showSlide(index);
                 stopAutoPlay();
                 startAutoPlay(); // Restart auto play after manual navigation
