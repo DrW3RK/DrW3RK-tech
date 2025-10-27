@@ -108,6 +108,23 @@ section.active {
     }
 }
 
+/* Research Hero Image */
+.research-hero {
+    width: 100%;
+    margin-bottom: 40px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.research-hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}
+
 /* Home Section */
 .hero {
     margin-bottom: 60px;
@@ -916,6 +933,10 @@ footer {
     .thumbnail {
         width: 70px;
         height: 50px;
+    }
+
+    .research-hero {
+        margin-bottom: 30px;
     }
 }
 
