@@ -16,16 +16,16 @@
         maxSize: 100,            // Maximum dot radius
         colors: [
             // Subtle colors with reduced opacity for seamless background blend
-            [0.75, 1.0, 0.0, 0.8],   // Lime green
-            [1.0, 0.84, 0.0, 0.8],    // Gold
-            [1.0, 0.4, 0.7, 0.8],     // Hot pink
-            [0.0, 1.0, 1.0, 0.8],     // Cyan
-            [1.0, 0.5, 0.0, 0.8],    // Orange
-            [0.6, 0.4, 1.0, 0.8],     // Purple
-            [1.0, 1.0, 1.0, 0.8],    // White sparkle
-            [0.0, 0.8, 1.0, 0.8],     // Sky blue
-            [1.0, 0.2, 0.4, 0.8],     // Coral red
-            [0.4, 1.0, 0.6, 0.8],     // Mint green
+            [0.75, 1.0, 0.0, 0.5],   // Lime green
+            [1.0, 0.84, 0.0, 0.5],    // Gold
+            [1.0, 0.4, 0.7, 0.5],     // Hot pink
+            [0.0, 1.0, 1.0, 0.5],     // Cyan
+            [1.0, 0.5, 0.0, 0.5],    // Orange
+            [0.6, 0.4, 1.0, 0.5],     // Purple
+            [1.0, 1.0, 1.0, 0.5],    // White sparkle
+            [0.0, 0.8, 1.0, 0.5],     // Sky blue
+            [1.0, 0.2, 0.4, 0.5],     // Coral red
+            [0.4, 1.0, 0.6, 0.5],     // Mint green
         ]
     };
 
