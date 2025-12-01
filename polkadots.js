@@ -1,6 +1,6 @@
 /**
  * A10city Labs - WebGL Polkadot Background Effect
- * Festive animated dots with bright glowing shadows
+ * Subtle animated dots with soft glowing shadows
  */
 
 (function() {
@@ -8,24 +8,24 @@
 
     // Configuration
     const CONFIG = {
-        maxDots: 9,            // Maximum dots on screen at once
+        maxDots: 100,            // Maximum dots on screen at once
         spawnInterval: 500,       // ms between spawn attempts (faster spawning)
         minLifetime: 3000,       // Minimum dot lifetime in ms
         maxLifetime: 4000,       // Maximum dot lifetime in ms
         minSize: 50,             // Minimum dot radius
         maxSize: 100,            // Maximum dot radius
         colors: [
-            // Festive bright colors with higher opacity
-            [0.75, 1.0, 0.0, 0.85],   // Lime green (BFFF00) - main accent
+            // Subtle colors with reduced opacity for seamless background blend
+            [0.75, 1.0, 0.0, 0.8],   // Lime green
             [1.0, 0.84, 0.0, 0.8],    // Gold
-            [1.0, 0.4, 0.7, 0.75],    // Hot pink
-            [0.0, 1.0, 1.0, 0.75],    // Cyan
-            [1.0, 0.5, 0.0, 0.8],     // Orange
-            [0.6, 0.4, 1.0, 0.75],    // Purple
-            [1.0, 1.0, 1.0, 0.7],     // White sparkle
-            [0.0, 0.8, 1.0, 0.75],    // Sky blue
-            [1.0, 0.2, 0.4, 0.75],    // Coral red
-            [0.4, 1.0, 0.6, 0.75],    // Mint green
+            [1.0, 0.4, 0.7, 0.8],     // Hot pink
+            [0.0, 1.0, 1.0, 0.8],     // Cyan
+            [1.0, 0.5, 0.0, 0.8],    // Orange
+            [0.6, 0.4, 1.0, 0.8],     // Purple
+            [1.0, 1.0, 1.0, 0.8],    // White sparkle
+            [0.0, 0.8, 1.0, 0.8],     // Sky blue
+            [1.0, 0.2, 0.4, 0.8],     // Coral red
+            [0.4, 1.0, 0.6, 0.8],     // Mint green
         ]
     };
 
@@ -45,7 +45,7 @@
         }
     `;
 
-    // Fragment shader - renders glowing circles with bright shadows
+    // Fragment shader - renders soft glowing circles for subtle effect
     const fragmentShaderSource = `
         precision mediump float;
         
@@ -55,30 +55,27 @@
             vec2 coord = gl_PointCoord - vec2(0.5);
             float dist = length(coord);
             
-            // Core circle with soft edge
-            float core = 1.0 - smoothstep(0.2, 0.4, dist);
+            // Core circle with very soft edge
+            float core = 1.0 - smoothstep(0.15, 0.45, dist);
             
-            // Bright outer glow (multiple layers for festive effect)
-            float glow1 = exp(-dist * 4.0) * 0.6;
-            float glow2 = exp(-dist * 2.5) * 0.4;
-            float glow3 = exp(-dist * 1.5) * 0.25;
+            // Softer outer glow for subtle effect
+            float glow1 = exp(-dist * 5.0) * 0.4;
+            float glow2 = exp(-dist * 3.0) * 0.25;
+            float glow3 = exp(-dist * 1.8) * 0.15;
             
-            // Combine glows for bright halo effect
+            // Combine glows for soft halo effect
             float totalGlow = glow1 + glow2 + glow3;
             
-            // Bright inner highlight for sparkle
-            float highlight = exp(-dist * 8.0) * 0.5;
+            // Subtle inner highlight
+            float highlight = exp(-dist * 10.0) * 0.3;
             
             // Final alpha combines core and glows
             float alpha = core + totalGlow;
             
-            // Brighten the color towards white in the center for sparkle
-            vec3 brightColor = mix(v_color.rgb, vec3(1.0), highlight);
+            // Soften the color blend towards center
+            vec3 softColor = mix(v_color.rgb, vec3(1.0), highlight * 0.5);
             
-            // Add slight color boost for festive vibrancy
-            brightColor = brightColor * 1.2;
-            
-            gl_FragColor = vec4(brightColor, v_color.a * alpha);
+            gl_FragColor = vec4(softColor, v_color.a * alpha);
         }
     `;
 
@@ -105,7 +102,8 @@
                 width: 100%;
                 height: 100%;
                 pointer-events: none;
-                z-index: 1;
+                z-index: 0;
+                opacity: 0.6;
             `;
             document.body.insertBefore(this.canvas, document.body.firstChild);
 
@@ -163,7 +161,7 @@
             this.colorBuffer = gl.createBuffer();
             this.alphaBuffer = gl.createBuffer();
 
-            // Enable additive blending for bright glowing effect
+            // Enable additive blending for soft glowing effect
             gl.enable(gl.BLEND);
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
         }
